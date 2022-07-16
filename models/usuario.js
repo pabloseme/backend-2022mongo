@@ -15,8 +15,8 @@ const UsuarioSchema=Schema({
         required:[true,"El password es obligatorio"]
     },
     role:{
-        type:String,
-        enum:["ADMIN_ROLE","USER_ROLE"]
+        type:String
+       // enum:["ADMIN_ROLE","USER_ROLE"]   //lo valido desde la base de datos segun la collecion
     },
     img:{
         type:String

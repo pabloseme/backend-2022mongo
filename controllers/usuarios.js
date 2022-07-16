@@ -12,13 +12,7 @@ const usuariosGet=(req, res)=>{
 
 const usuariosPost=async(req, res)=>{
     //const body= req.body;
-    const errors=validationResult(req)  //almacena todos los errores que me devuelve el check
-
-    //si no esta vacia
-    if (!errors.isEmpty()){
-        return res.status(400).json(errors)
-    }
-
+ 
     //destructuro el body para hacer validaciones
     const {nombre,email,password,role}= req.body
 
