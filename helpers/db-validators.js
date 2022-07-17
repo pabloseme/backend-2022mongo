@@ -1,4 +1,5 @@
 const rol=require('../models/rol');
+const Usuario=require('../models/usuario');
 
 const esRoleValido=async (role="")=>{
     const existeRole=await rol.findOne({role});
@@ -7,6 +8,27 @@ const esRoleValido=async (role="")=>{
     }
 }
 
+//validar si el mail existe
+const existeEmail= async (email)=>{
+   const existeEmail=await Usuario.findOne({email})
+    if (existeEmail){
+        throw new Error(`El Correo ${email} ya existe en la BD`);
+        }
+    }
+
+    //VALIDAR ID SI EXISTE
+    const existeUsuarioPorId=async(id)=>{
+        const existeusuario= await Usuario.findOne({id})
+        if (!existeusuario){
+            throw new Error(`El Id ${id} no existe en la BD`);
+            }         
+    }
+
+
+
+
 module.exports={
-    esRoleValido
+    esRoleValido,
+    existeEmail,
+    existeUsuarioPorId
 }

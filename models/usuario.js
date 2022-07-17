@@ -27,5 +27,10 @@ const UsuarioSchema=Schema({
     }
 })
 
+//quitar datos de la repuesta json que envio al front
+UsuarioSchema.methods.toJSON =function (){
+    const {__v,password,...usuario}=this.toObject();
+    return usuario;
+}
 //Usuario, representa el modelo pero puede llevar otro nombre distinto al del archivo
 module.exports=model("Usuario",UsuarioSchema)
