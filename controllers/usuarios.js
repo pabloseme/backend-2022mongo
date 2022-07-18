@@ -7,7 +7,28 @@ const bcrypt=require('bcryptjs');
 const {validationResult}=require("express-validator")
 
 const usuariosGet=(req, res)=>{
-    res.send('hello esta es mi primer ruta , jeje')
+    const {limite=5,desde=0}=req.query;
+    //const usuarios= await Usuario.find({estado: true})
+    //.skip(desde)
+    //.limit(limite)
+
+    //const total= await Usuario.countDocuments({estado: true});
+
+    ///hacer ambas peticiones simultaneas de manera mas optimas
+    const [usuarios,total]= await Promise.all([
+        Usuario.find({estado: true}
+        .skip(desde)
+        .limit(limete),
+        Usuario.countDocuments({estado: true}))
+    ])
+    
+    res.json({
+        total,
+        limite,
+        desde,
+        usuarios
+    });
+
     }
 
 const usuariosPost=async(req, res)=>{
