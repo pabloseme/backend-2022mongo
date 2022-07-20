@@ -1,3 +1,4 @@
+const {request,response}=require("express");
 const Usuario = require('../models/usuario');
 //const usuario=require('../models/usuario')
 
@@ -6,8 +7,30 @@ const bcrypt=require('bcryptjs');
 //esto me trae el resultado de la validacion del check que esta en las rutas
 const {validationResult}=require("express-validator")
 
-const usuariosGet=(req, res)=>{
-    res.send('hello esta es mi primer ruta , jeje')
+const usuariosGet=async(req=request, res)=>{    
+    const {limite=5,desde=0}=req.query;
+    //const usuarios= await Usuario.find({estado: true})
+    //.skip(desde)
+    //.limit(limite)
+
+    //const total= await Usuario.countDocuments({estado: true});
+
+    ///hacer ambas peticiones simultaneas de manera mas optimas
+    const [usuarios,total]= await Promise.all([
+        Usuario.find({estado: true})
+        .skip(desde)
+        .limit(limite),
+        Usuario.countDocuments({estado: true})
+    ])
+    
+    res.json({
+        total,
+        limite,
+        desde,
+        usuarios
+    });
+    
+    
     }
 
 const usuariosPost=async(req, res)=>{
@@ -66,7 +89,12 @@ const usuariosPut= async(req, res)=>{
 const usuariosDelete=async(req, res)=>{
     const {id}=req.params;
 
-    const usuarioBorrado= await Usuario.findByIdAndRemove(id);
+    //inactivar un usuario
+    const query={estado: false}
+    const usuarioBorrado=await Usuario.findByIdAndUpdate(id,query,{new:true})
+
+    //borrar fisicamente un registro
+    //const usuarioBorrado= await Usuario.findByIdAndRemove(id);
 
     res.json({
         msg :  "Usuario Borrado",

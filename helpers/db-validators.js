@@ -1,5 +1,6 @@
 const rol=require('../models/rol');
 const Usuario=require('../models/usuario');
+const Provincia=require('../models/provincias');
 
 const esRoleValido=async (role="")=>{
     const existeRole=await rol.findOne({role});
@@ -18,17 +19,25 @@ const existeEmail= async (email)=>{
 
     //VALIDAR ID SI EXISTE
     const existeUsuarioPorId=async(id)=>{
-        const existeusuario= await Usuario.findOne({id})
+        const existeusuario= await Usuario.findOne({_id: id})
         if (!existeusuario){
             throw new Error(`El Id ${id} no existe en la BD`);
             }         
     }
 
+       //VALIDAR COD DE PROVINCIA  SI EXISTE
+       const esCodValido=async(codigo)=>{
+        const existeprovinc= await Provincia.findOne({codigo})
+        if (!existeprovinc){
+            throw new Error(`El Codigo ${codigo} no es correcto`);
+            }         
+    }
 
 
 
 module.exports={
     esRoleValido,
     existeEmail,
-    existeUsuarioPorId
+    existeUsuarioPorId,
+    esCodValido
 }
