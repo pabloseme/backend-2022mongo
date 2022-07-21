@@ -17,7 +17,7 @@ router.get('/',
 
  //el isEmail, verifica que el campo email, tenga formato de correo electronico
  router.post('/',
- [check("codigo","El codigo debe tener como minimo 3 digitos").isLength({min:6}),
+ [check("codigo","El codigo debe tener como minimo 3 digitos").isLength({min:3}),
  check("provincia","La Provincia no puede estar vacia").notEmpty() , 
  check("estado","No es un Estado Valido").isIn([true,false]),
  validarCampos],
